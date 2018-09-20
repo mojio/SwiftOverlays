@@ -147,37 +147,37 @@ open class SwiftOverlays: NSObject {
         
             - parameter innerView: View to set constraints on
         */
-        open static func centerViewInSuperview(_ view: UIView) {
+        public static func centerViewInSuperview(_ view: UIView) {
             assert(view.superview != nil, "`view` should have a superview")
             
             view.translatesAutoresizingMaskIntoConstraints = false
             
             let constraintH = NSLayoutConstraint(item: view,
-                attribute: NSLayoutAttribute.centerX,
-                relatedBy: NSLayoutRelation.equal,
+                                                 attribute: .centerX,
+                relatedBy: .equal,
                 toItem: view.superview,
-                attribute: NSLayoutAttribute.centerX,
+                attribute: .centerX,
                 multiplier: 1,
                 constant: 0)
             let constraintV = NSLayoutConstraint(item: view,
-                attribute: NSLayoutAttribute.centerY,
-                relatedBy: NSLayoutRelation.equal,
+                attribute: .centerY,
+                relatedBy: .equal,
                 toItem: view.superview,
-                attribute: NSLayoutAttribute.centerY,
+                attribute: .centerY,
                 multiplier: 1,
                 constant: 0)
             let constraintWidth = NSLayoutConstraint(item: view,
-                attribute: NSLayoutAttribute.width,
-                relatedBy: NSLayoutRelation.equal,
+                attribute: .width,
+                relatedBy: .equal,
                 toItem: nil,
-                attribute: NSLayoutAttribute.notAnAttribute,
+                attribute: .notAnAttribute,
                 multiplier: 1,
                 constant: view.frame.size.width)
             let constraintHeight = NSLayoutConstraint(item: view,
-                attribute: NSLayoutAttribute.height,
-                relatedBy: NSLayoutRelation.equal,
+                attribute: .height,
+                relatedBy: .equal,
                 toItem: nil,
-                attribute: NSLayoutAttribute.notAnAttribute,
+                attribute: .notAnAttribute,
                 multiplier: 1,
                 constant: view.frame.size.height)
             view.superview!.addConstraints([constraintV, constraintH, constraintWidth, constraintHeight])
@@ -256,7 +256,7 @@ open class SwiftOverlays: NSObject {
     // MARK: Non-blocking
     @discardableResult
     open class func showCenteredWaitOverlay(_ parentView: UIView) -> UIView {
-        let ai = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let ai = UIActivityIndicatorView(style: .whiteLarge)
         ai.startAnimating()
         
         let containerViewRect = CGRect(
@@ -292,7 +292,7 @@ open class SwiftOverlays: NSObject {
     
     @discardableResult
     open class func showCenteredWaitOverlayWithText(_ parentView: UIView, text: String) -> UIView  {
-        let ai = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        let ai = UIActivityIndicatorView(style: .white)
         ai.startAnimating()
         
         return showGenericOverlay(parentView, text: text, accessoryView: ai)
@@ -390,13 +390,13 @@ open class SwiftOverlays: NSObject {
     
     open class func updateOverlayText(_ parentView: UIView, text: String) {
         if let overlay = parentView.viewWithTag(containerViewTag) {
-            overlay.subviews.flatMap { $0 as? UILabel }.first?.text = text
+            overlay.subviews.compactMap { $0 as? UILabel }.first?.text = text
         }
     }
     
     open class func updateOverlayProgress(_ parentView: UIView, progress: Float) {
         if let overlay = parentView.viewWithTag(containerViewTag) {
-            overlay.subviews.flatMap { $0 as? UIProgressView }.first?.progress = progress
+            overlay.subviews.compactMap { $0 as? UIProgressView }.first?.progress = progress
         }
     }
     
@@ -405,7 +405,7 @@ open class SwiftOverlays: NSObject {
     open class func showOnTopOfStatusBar(_ notificationView: UIView, duration: TimeInterval, animated: Bool = true) {
         if bannerWindow == nil {
             bannerWindow = UIWindow()
-            bannerWindow!.windowLevel = UIWindowLevelStatusBar + 1
+            bannerWindow!.windowLevel = UIWindow.Level.statusBar + 1
             bannerWindow!.backgroundColor = UIColor.clear
         }
 
